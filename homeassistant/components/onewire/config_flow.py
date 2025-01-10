@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import logging
 from typing import Any
 
 from pyownet import protocol
 import voluptuous as vol
 
+from homeassistant.components import zeroconf
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult, OptionsFlow
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import HomeAssistant, callback
@@ -27,6 +29,7 @@ from .const import (
 )
 from .onewirehub import OneWireConfigEntry
 
+_LOGGER = logging.getLogger(__name__)
 DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_HOST, default=DEFAULT_HOST): str,
@@ -99,6 +102,14 @@ class OneWireFlowHandler(ConfigFlow, domain=DOMAIN):
             description_placeholders={"name": reconfigure_entry.title},
             errors=errors,
         )
+
+    async def async_step_zeroconf(
+        self, discovery_info: zeroconf.ZeroconfServiceInfo
+    ) -> ConfigFlowResult:
+        """Handle zeroconf discovery."""
+        # self._async_handle_discovery_without_unique_id
+        _LOGGER.error("Zeroconf discovery not implemented: %s", discovery_info)
+        return self.async_abort(reason="not_implemented")
 
     @staticmethod
     @callback
