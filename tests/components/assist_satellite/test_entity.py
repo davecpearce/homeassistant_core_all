@@ -488,7 +488,7 @@ async def test_vad_sensitivity_entity_not_found(
                 "start_media_id": "media-source://bla",
             },
             (
-                None,
+                "Hello",
                 AssistSatelliteAnnouncement(
                     "Hello", "https://www.home-assistant.io/resolved.mp3", "media_id"
                 ),
